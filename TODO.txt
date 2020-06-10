@@ -5,7 +5,7 @@ For that we need the following functions/classes
 
 Task                    Complete                Info
 load_config             ✓
-ClaimDataset                                    Almost working
+ClaimDataset            ✓                       No augmentation (see old version had some), suspect should also set a ceiling/floor to ECG values to prevent extreme outliers dominating the MSE loss
 load_model              ✓
 load_optimizer          ✓
 load_criterion          ✓
