@@ -20,7 +20,7 @@ training:
   device: cuda
   data_parallel: false
   # data loading
-  batch_size: 128
+  batch_size: 32
   num_workers: 1
   # loss functions
   train_criterion: mseloss

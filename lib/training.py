@@ -82,9 +82,9 @@ def cycle(train_or_test, model, dataloader, epoch, criterion, optimizer, cfg, sc
 
     return loss
 
-def save_state(state, test_metric, best_metric, cfg, last_save_path, lowest_best=True):
+def save_state(state, filename, test_metric, best_metric, cfg, last_save_path, lowest_best=True):
     save = cfg['output']['save']
-    save_path = os.path.join(cfg['output']['model_dir'], cfg['experiment_id'])
+    save_path = os.path.join(cfg['output']['model_dir'], cfg['experiment_id'], filename)
     if save == 'all':
         torch.save(state, save_path)
     elif (test_metric < best_metric) == lowest_best:

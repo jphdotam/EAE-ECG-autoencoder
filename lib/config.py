@@ -11,6 +11,7 @@ def load_config(configpath):
     model_dir = cfg['output']['model_dir']
     if model_dir:
         model_dir = os.path.join(model_dir, experiment_id)
+        print(model_dir)
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
 

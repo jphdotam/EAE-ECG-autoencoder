@@ -70,7 +70,7 @@ class TxtFile:
         n_channels = int(line.split(' ')[-1])
         for n_channel in range(n_channels):
             line = self._read_until(file, "Label:")
-            channel_name = line.split(' ')[-1].rstrip()
+            channel_name = line.split(': ')[-1].rstrip()
             channels.append(channel_name)
         return channels, sample_freq
 
@@ -116,10 +116,4 @@ class TxtFile:
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    txtfile = TxtFile("../AP1.txt")
-    for i, col_name in enumerate(txtfile.data.columns):
-        plt.subplot(2, 6, i+1)
-        plt.plot(txtfile.data.iloc[:, i][:800])
-        plt.axis('off')
-        plt.title(col_name)
-    plt.show()
+    txtfile = TxtFile("D:/Box/His ML/Data/Completed Cases Until Feb 2020/ECGs- His Project/H001/H001_2_2_SH_RNC_10.txt")

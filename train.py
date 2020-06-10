@@ -48,7 +48,7 @@ if __name__ == "__main__":
                      'model': model_weights,
                      'optimizer': optimizer.state_dict(),
                      'scheduler': scheduler}
-            best_loss, last_save_path = save_state(state, test_loss, best_loss, cfg, last_save_path, lowest_best=True)
+            best_loss, last_save_path = save_state(state, f"f{fold}_{epoch}_{test_loss:.05f}.pt", test_loss, best_loss, cfg, last_save_path, lowest_best=True)
 
             # Plotting
             # vis(dl_test, model, epoch, cfg, writer)
