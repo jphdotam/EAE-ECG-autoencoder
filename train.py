@@ -39,8 +39,8 @@ if __name__ == "__main__":
             print(f"\nEpoch {epoch} of {n_epochs}")
 
             # Cycle
-            train_loss, train_kappa = cycle('train', model, dl_train, epoch, train_criterion, optimizer, cfg, scheduler, writer)
-            test_loss, test_kappa = cycle('test', model, dl_test, epoch, test_criterion, optimizer, cfg, scheduler, writer)
+            train_loss = cycle('train', model, dl_train, epoch, train_criterion, optimizer, cfg, scheduler, writer)
+            test_loss = cycle('test', model, dl_test, epoch, test_criterion, optimizer, cfg, scheduler, writer)
 
             # Save state if required
             model_weights = model.module.state_dict() if cfg['training']['data_parallel'] else model.state_dict()

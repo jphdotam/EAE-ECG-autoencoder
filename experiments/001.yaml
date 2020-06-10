@@ -34,14 +34,14 @@ training:
 
 output:
   # model
-  model_dir: ../output/models
+  model_dir: ./output/models
   save: 'best'  # 'best', 'improvements', 'all'
   # logs
-  log_dir: ../output/logs
+  log_dir: ./output/logs
   use_tensorboard: true
   log_freq: 10  # In iterations
   # vis
-  vis_dir: ../output/vis
+  vis_dir: ./output/vis
   vis_every: 10  # In epochs
   vis_n: 10
 
