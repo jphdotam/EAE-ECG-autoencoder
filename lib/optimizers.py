@@ -2,7 +2,7 @@ import math
 import itertools as it
 
 import torch
-from torch.optim import Adam
+from torch.optim import Adam, AdamW
 from torch.optim.optimizer import Optimizer
 from torch.optim.lr_scheduler import OneCycleLR
 
@@ -17,6 +17,8 @@ def load_optimizer(model, cfg, state, steps_per_epoch=None):
     opt = cfg['training']['optimizer']
     if opt == 'adam':
         optimizer = Adam((p for p in model.parameters() if p.requires_grad), lr=lr, weight_decay=wd)
+    elif opt == 'adamw':
+        optimizer = AdamW((p for p in model.parameters() if p.requires_grad), lr=lr, weight_decay=wd)
     else:
         raise ValueError(f"Unknown optimizer {opt}")
 

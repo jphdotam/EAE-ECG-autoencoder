@@ -9,7 +9,7 @@ from lib.txtfile import TxtFile
 def export(cfg, box_dir):
     ecg_groups = cfg['export']['ecg_groups']
     export_dir = cfg['data']['dataset_path']
-    lead_names = cfg['export']['lead_names']
+    lead_names = cfg['data']['lead_names']
 
     for ecg_group in ecg_groups:
         # Get the list of text files and matching labels for each export group
@@ -63,7 +63,12 @@ def export(cfg, box_dir):
             # Trim the TxtFile from start:end, including any offset
             # Label is embedded, with also the start time of the snip
             try:
-                txtfile_filtered = txtfile.data[lead_names].loc[start + ecg_group['offset']:end + ecg_group['offset']]
+                txtfile_filtered = txtfile.data[lead_names].loc[start + ecg_group['offset']:end + ecg_group['offset'] - 1]  # -1 as up to and including row
+                exclude_shorter_than = cfg['export']['exclude_shorter_than']
+                if exclude_shorter_than:
+                    if len(txtfile_filtered) < exclude_shorter_than:
+                        print(f"beat from {txt_path} was shorter than {exclude_shorter_than} ({len(txtfile_filtered)}) -> skipping")
+                        continue
                 np.savez_compressed(
                     os.path.join(export_dir, ecg_group['name'], f"{study_name}_{os.path.basename(txtfile.filepath)}"),
                     data=txtfile_filtered,

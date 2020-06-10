@@ -39,11 +39,10 @@ def cycle(train_or_test, model, dataloader, epoch, criterion, optimizer, cfg, sc
     elif train_or_test == 'test':
         model.eval()
         training = False
-
     else:
         raise ValueError(f"train_or_test must be 'train', or 'test', not {train_or_test}")
 
-    for i_batch, (x, y_true) in enumerate(dataloader):
+    for i_batch, (x, y_true, _npy_path, _seg_labels, _start_time) in enumerate(dataloader):
         x = x.to(device, non_blocking=True)
         y_true = y_true.to(device, non_blocking=True)
         optimizer.zero_grad()

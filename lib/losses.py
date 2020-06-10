@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 def load_criterion(cfg):
     def get_criterion(name):
-        if name == 'mse':
+        if name == 'mseloss':
             return nn.MSELoss()
         else:
             raise ValueError()

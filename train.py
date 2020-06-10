@@ -15,14 +15,15 @@ CONFIG = "./experiments/001.yaml"
 
 if __name__ == "__main__":
     cfg = load_config(CONFIG)
+    bs, n_workers, n_folds = cfg['training']['batch_size'], cfg['training']['num_workers'], cfg['data']['n_folds']
 
-    for fold in range(1,cfg['data']['n_folds']):
+    for fold in range(1, n_folds):
 
         # Data
         ds_train = ClaimDataset(cfg, 'train', fold)  # This won't work -  see TODO
         ds_test = ClaimDataset(cfg, 'test', fold)
-        dl_train = DataLoader(ds_train, cfg['training']['batch_size'], shuffle=True, num_workers=cfg['training']['n_workers'], pin_memory=True, collate_fn=collate_longest_in_batch)
-        dl_test = DataLoader(ds_test, cfg['training']['batch_size'], shuffle=False, num_workers=cfg['training']['n_workers'], pin_memory=True, collate_fn=collate_longest_in_batch)
+        dl_train = DataLoader(ds_train, bs, shuffle=True, num_workers=n_workers, pin_memory=True)
+        dl_test = DataLoader(ds_test, bs, shuffle=False, num_workers=n_workers, pin_memory=True)
 
         # Model
         model, starting_epoch, state = load_model(cfg)

@@ -5,24 +5,25 @@ resume:
 
 data:
   dataset_path: ./data/claim/ap2_ve2_his2
+  lead_names: [I, II, III, aVR, aVL, aVF, V1, V2, V3, V4, V5, V6]
   input_channels: [aVF, V2]
   n_output_channels: 12
-  mean: false  # Should be of len(input_channels), or false for no norm
-  std: false
+  n_folds: 4
+  excluded_folds: [4,]  # If we want to use a fold for testing
+  seq_len: 1024
+  iqr: [786, 1099, 928, 844, 688, 932, 1153, 1630, 1554, 1423, 1193, 960]  # Should be of len(input_channels), or false for no norm
 
 training:
-  model: 'unet1d'
+  model: unet1d
   n_epochs: 250
   # gpu
   device: cuda
-  dataparallel: false
+  data_parallel: false
   # data loading
   batch_size: 128
-  n_folds: 4
-  excluded_folds: [4,]  # If we want to use a fold for testing
   num_workers: 1
   # loss functions
-  criterion: mseloss
+  train_criterion: mseloss
   test_criterion: mseloss
   # optimizer
   optimizer: adamw
@@ -45,56 +46,54 @@ output:
   vis_n: 10
 
 transforms:
-  train:
-    normalise: true
-  test:
-    normalise: true
+  train: false
+  test: false
 
 export:
   id: ap2_ve2_his2
-  lead_names: ['I', 'II', 'III', 'aVR', 'aVL', 'aVF', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6']
+  exclude_shorter_than: 1024  # false to not exclude; relevant if beat at end of txt file and missing bits
   ecg_groups:
-    # AP cases
-    # - name: ap_sinus
-    #   path: CLAIM-Data/CLAIM-AP/Labelled BARD folders  # Relative to e.g. Box root supplied in the export script, so different users can use 1 config
-    #   from: [ranges, sinus pwave, from]
-    #   to: 1024
-    #   recode: [[[ranges, sinus qrs, from], qrs_from], [[ranges, sinus qrs, to], qrs_to]]
-    #   offset: -50
+     # AP cases
+     - name: ap_sinus
+       path: CLAIM-Data/CLAIM-AP/Labelled BARD folders  # Relative to e.g. Box root supplied in the export script, so different users can use 1 config
+       from: [ranges, sinus pwave, from]
+       to: 1024
+       recode: [[[ranges, sinus qrs, from], qrs_from], [[ranges, sinus qrs, to], qrs_to]]
+       offset: -50
 
-    # - name: ap_post_sinus
-    #   path: CLAIM-Data/CLAIM-AP/Labelled BARD folders
-    #   from: [ranges, post-ablation pwave, from]
-    #   to: 1024
-    #   recode: [[[ranges, post-ablation qrs, from], qrs_from], [[ranges, post-ablation qrs, to], qrs_to]]
-    #   offset: -50
+     - name: ap_post_sinus
+       path: CLAIM-Data/CLAIM-AP/Labelled BARD folders
+       from: [ranges, post-ablation pwave, from]
+       to: 1024
+       recode: [[[ranges, post-ablation qrs, from], qrs_from], [[ranges, post-ablation qrs, to], qrs_to]]
+       offset: -50
 
-    # # VE cases
-    # - name: ve_sinus
-    #   path: CLAIM-Data/CLAIM-VE/New edited Labelled text files
-    #   from: [ranges, sinus pwave, from]
-    #   to: 1024
-    #   recode: [[[ranges, sinus qrs, from], qrs_from], [[ranges, sinus qrs, to], qrs_to]]
-    #   offset: -50
+     # VE cases
+     - name: ve_sinus
+       path: CLAIM-Data/CLAIM-VE/New edited Labelled text files
+       from: [ranges, sinus pwave, from]
+       to: 1024
+       recode: [[[ranges, sinus qrs, from], qrs_from], [[ranges, sinus qrs, to], qrs_to]]
+       offset: -50
 
-    # - name: ve_ectopic
-    #   path: CLAIM-Data/CLAIM-VE/New edited Labelled text files
-    #   from: [ranges, ectopic qrst, from]
-    #   to: 1024
-    #   recode: [[[ranges, ectopic qrst, from], qrs_from], [[markers, t onset, location], qrs_to]]
-    #   offset: -50
+     - name: ve_ectopic
+       path: CLAIM-Data/CLAIM-VE/New edited Labelled text files
+       from: [ranges, ectopic qrst, from]
+       to: 1024
+       recode: [[[ranges, ectopic qrst, from], qrs_from], [[markers, t onset, location], qrs_to]]
+       offset: -50
 
-    # # His cases
-    # - name: his_sinus
-    #   path: His ML/Data/Completed Cases from BSc
-    #   from: [ranges, intrinsic P wave, from]
-    #   to: 1024
-    #   recode: [[[ranges, intrinsic QRS, from], qrs_from], [[ranges, intrinsic QRS, to], qrs_to]]
-    #   offset: -50
+     # His cases
+     - name: his_sinus
+       path: His ML/Data/Completed Cases from BSc
+       from: [ranges, intrinsic P wave, from]
+       to: 1024
+       recode: [[[ranges, intrinsic QRS, from], qrs_from], [[ranges, intrinsic QRS, to], qrs_to]]
+       offset: -50
 
-    - name: his_paced
-      path: His ML/Data/Completed Cases from BSc
-      from: [markers, Start of paced QRS, location]
-      to: 1024
-      recode: [[[markers, Start of paced QRS, location], qrs_from], [[markers, End of paced QRS, location], qrs_to]]
-      offset: -50
+     - name: his_paced
+       path: His ML/Data/Completed Cases from BSc
+       from: [markers, Start of paced QRS, location]
+       to: 1024
+       recode: [[[markers, Start of paced QRS, location], qrs_from], [[markers, End of paced QRS, location], qrs_to]]
+       offset: -50
