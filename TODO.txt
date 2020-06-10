@@ -1,4 +1,5 @@
-I think the priority is to get a working training script.
+Data exporting should work using the export_data.py script
+I think the priority is to get train.py working
 
 For that we need the following functions/classes
 
