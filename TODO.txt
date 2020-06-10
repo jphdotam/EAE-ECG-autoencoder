@@ -5,7 +5,7 @@ For that we need the following functions/classes
 
 Task                    Complete                Info
 load_config             ✓
-ClaimDataset                                    Exists but needs refactoring and support for folds - suggest working from the HML example, as should just use as ClaimDataset(cfg, 'train', fold), like the HML ECGDataset() class
+ClaimDataset                                    Almost working
 load_model              ✓
 load_optimizer          ✓
 load_criterion          ✓
