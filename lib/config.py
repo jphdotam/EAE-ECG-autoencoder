@@ -26,4 +26,4 @@ def load_config(configpath):
         if not os.path.exists(vis_dir):
             os.makedirs(vis_dir)
 
-    return cfg, model_dir, log_dir, vis_dir
+    return cfg

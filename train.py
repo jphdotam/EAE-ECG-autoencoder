@@ -14,7 +14,7 @@ from lib.vis import vis
 CONFIG = "./experiments/001.yaml"
 
 if __name__ == "__main__":
-    cfg, model_dir, vis_dir, log_dir = load_config(CONFIG)
+    cfg = load_config(CONFIG)
 
     for fold in range(1,cfg['data']['n_folds']):
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         train_criterion, test_criterion = load_criterion(cfg)
 
         # Train
-        writer = get_summary_writer(cfg, log_dir)
+        writer = get_summary_writer(cfg)
         best_loss, best_path, last_save_path = 1e10, None, None
         n_epochs = cfg['training']['n_epochs']
 
@@ -47,8 +47,7 @@ if __name__ == "__main__":
                      'model': model_weights,
                      'optimizer': optimizer.state_dict(),
                      'scheduler': scheduler}
-            save_path = os.path.join(model_dir, f"f{fold}_{epoch}_{test_kappa:.05f}.pt")
-            best_loss, last_save_path = save_state(state, save_path, test_loss, best_loss, cfg, last_save_path, lowest_best=True)
+            best_loss, last_save_path = save_state(state, test_loss, best_loss, cfg, last_save_path, lowest_best=True)
 
             # Plotting
-            vis(dl_test, model, epoch, vis_dir, cfg, show=False, writer=writer, save=True)
+            # vis(dl_test, model, epoch, cfg, writer)

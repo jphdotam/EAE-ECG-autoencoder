@@ -10,6 +10,6 @@ load_model              ✓
 load_optimizer          ✓
 load_criterion          ✓
 get_summary_writer      ✓
-cycle                                           Needs implementing: suggest working from the HML example and then removing the stuff about cohen's kappa/accuracy, as we only need MSE.
-save_state                                      Needs implementing: should be very easy, can just copy the HML code
-vis                                             Needs implementing: not used in HML, but was used in T1T2 to create the plots with matplotlib that get saved to disk as a PNG, and to tensorboard. Suggest we implement this after we get it training, so we can visualise the axes/transition points at the end of every epoch
+cycle                   ✓
+save_state              ✓                       
+vis                                             Can be left until last. Needs implementing: not used in HML, but was used in T1T2 to create the plots with matplotlib that get saved to disk as a PNG, and to tensorboard. Suggest we implement this after we get it training, so we can visualise the axes/transition points at the end of every epoch
