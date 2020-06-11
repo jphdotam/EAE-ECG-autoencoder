@@ -9,12 +9,11 @@ from torch.utils.data import Dataset
 
 
 class ClaimDataset(Dataset):
-    def __init__(self, cfg, train_or_test, fold, final_test=False, return_info=False):
+    def __init__(self, cfg, train_or_test, fold, final_test=False):
         self.cfg = cfg
         self.train_or_test = train_or_test
         self.fold = fold
         self.final_test = final_test
-        self.return_info = return_info
 
         self.datapath = cfg['data']['dataset_path']
         self.input_lead_names = cfg['data']['input_channels']
@@ -54,10 +53,7 @@ class ClaimDataset(Dataset):
         x = torch.tensor(x, dtype=torch.float)
         y = torch.tensor(y, dtype=torch.float)
 
-        if self.return_info:
-            return x, y, npy_path, seg_labels, start_time
-        else:
-            return x, y
+        return x, y, {'path': npy_path, 'seg_labels': seg_labels, 'start_time': start_time}
 
     def transform(self, x, y):
         raise NotImplementedError("This is where augmentations will go, but not implemented")

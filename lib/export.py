@@ -49,16 +49,21 @@ def export(cfg, box_dir):
                 continue
 
             # If 'recode' needed, add this to the seg_data
+            # If a recode is listed, but it can't find the required label, beat is marked as invalud and not extracted
+            # This is necessary to stop the pytorch dataloader panicking when certain keys are missing from the dict.
+            invalid_due_to_recode_error = False
             if 'recode' in ecg_group:
                 for recode_list in ecg_group['recode']:
                     source_range_or_marker, source_typ, source_loc = recode_list[0]
                     recode_target = recode_list[1]
                     recode_sources = [seg for seg in seglabel_data[source_range_or_marker] if seg['type'] == source_typ]
                     if len(recode_sources) != 1:
-                        print(f"WARNING: "
-                              f"{len(recode_sources)} segmentation labels for {source_typ} in {seglabel_data}, Skipping!")
-                        continue
-                    seglabel_data[recode_target] = recode_sources[0][source_loc]
+                        print(f"WARNING: {txt_path} {len(recode_sources)} segmentation labels for {source_typ} in {seglabel_data}, Skipping!")
+                        invalid_due_to_recode_error = True
+                    else:
+                        seglabel_data[recode_target] = recode_sources[0][source_loc]
+            if invalid_due_to_recode_error:
+                continue
 
             # Trim the TxtFile from start:end, including any offset
             # Label is embedded, with also the start time of the snip
